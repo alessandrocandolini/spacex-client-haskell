@@ -1,0 +1,13 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "spacex-client-haskell:lib"
+
+    - path: "./app/Main.hs"
+      component: "spacex-client-haskell:exe:spacex-client-haskell-exe"
+
+    - path: "./app/Paths_spacex_client_haskell.hs"
+      component: "spacex-client-haskell:exe:spacex-client-haskell-exe"
+
+    - path: "./test"
+      component: "spacex-client-haskell:test:spacex-client-haskell-test"

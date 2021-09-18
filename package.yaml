@@ -1,0 +1,48 @@
+name:                spacex-client-haskell
+version:             0.1.0.0
+
+dependencies:
+- base >= 4.7 && < 5
+- text
+- containers
+
+default-extensions:
+- OverloadedStrings
+
+ghc-options:
+  - -Wall
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wredundant-constraints
+
+library:
+  source-dirs: src
+
+executables:
+  spacex-client-haskell-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - spacex-client-haskell
+
+tests:
+  spacex-client-haskell-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - spacex-client-haskell
+    - hspec
+    - hspec-discover
+    - QuickCheck
+
+
+verbatim:
+  cabal-version: 3.0
