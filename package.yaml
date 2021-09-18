@@ -5,6 +5,12 @@ dependencies:
 - base >= 4.7 && < 5
 - text
 - containers
+- aeson 
+- generic-aeson
+- servant
+- servant-client
+- http-client
+- http-client-tls  
 
 default-extensions:
 - OverloadedStrings
