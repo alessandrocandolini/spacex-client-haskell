@@ -1,14 +1,11 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
 
-module Models where
+module Launches where
 
 import Data.Aeson (FromJSON)
-import GHC.Generics
-
-newtype RocketId = RocketId String
-  deriving (Eq, Show)
-  deriving (FromJSON) via String
+import GHC.Generics (Generic)
+import Rockets (RocketId)
 
 newtype LaunchId = LaunchId String
   deriving (Eq, Show)
@@ -26,10 +23,3 @@ data Launch = Launch
   deriving (Eq, Show, Generic)
 
 instance FromJSON Launch
-
-data Rocket = Rocket
-  { rocketId :: RocketId -- fix name
-  }
-  deriving (Eq, Show, Generic)
-
-instance FromJSON Rocket
