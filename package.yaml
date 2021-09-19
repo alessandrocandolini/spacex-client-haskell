@@ -5,12 +5,18 @@ dependencies:
 - base >= 4.7 && < 5
 - text
 - containers
+- nonempty-containers
 - aeson 
 - generic-aeson
 - servant
 - servant-client
 - http-client
 - http-client-tls  
+- fmt
+- async
+- lifted-async
+- mtl == 2.2.*
+- transformers
 
 default-extensions:
 - OverloadedStrings
