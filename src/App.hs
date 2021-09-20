@@ -14,6 +14,7 @@ import Servant.Client
     ClientM,
     mkClientEnv,
     parseBaseUrl,
+    runClientM,
   )
 import Servant.Client.Internal.HttpClient (runClientM)
 
@@ -27,16 +28,13 @@ clientEnv = mkClientEnv <$> manager <*> baseUrl
     baseUrl = parseBaseUrl "https://api.spacexdata.com"
 
 program' :: ClientEnv -> IO ()
-program' = (=<<) printRes . runExceptT . fetch
+program' = (=<<) printRes . runClientM fetch
 
-fetch :: ClientEnv -> ExceptT ClientError IO ([Launch], [Rocket])
-fetch e = do
-  l <- fetchAll
-  r <- mapConcurrently fetchRocket (uniqueRocketIds l)
+fetch :: ClientM ([Launch], [Rocket])
+fetch = do
+  l <- fetchLaunches
+  r <- mapConcurrently fetchRocketDetails (uniqueRocketIds l)
   pure (l, r)
-  where
-    fetchAll = ExceptT $ runClientM fetchLaunches e
-    fetchRocket r = ExceptT $ print r >> runClientM (fetchRocketDetails r) e
 
 uniqueRocketIds :: [Launch] -> [RocketId]
 uniqueRocketIds = S.toList . S.fromList . fmap rocket
