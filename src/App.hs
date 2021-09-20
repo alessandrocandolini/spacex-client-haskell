@@ -1,10 +1,9 @@
 module App where
 
 import Control.Concurrent.Async.Lifted
-import Control.Monad.Trans.Except
 import qualified Data.Set as S
 import Launches (Launch (rocket))
-import Network (fetchLatestLaunch, fetchLaunches, fetchRocketDetails)
+import Network (fetchLaunches, fetchRocketDetails)
 import Network.HTTP.Client (newManager)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Rockets (Rocket, RocketId)
@@ -16,7 +15,6 @@ import Servant.Client
     parseBaseUrl,
     runClientM,
   )
-import Servant.Client.Internal.HttpClient (runClientM)
 
 program :: IO ()
 program = clientEnv >>= program'

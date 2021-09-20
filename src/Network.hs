@@ -16,8 +16,8 @@ import Servant.API (JSON, type (:>))
 import Servant.API.Alternative (type (:<|>) (..))
 import Servant.API.Capture (Capture)
 import Servant.API.Verbs (Get)
-import Servant.Client (ClientEnv, ClientError, ClientM, HasClient (Client), hoistClient)
-import Servant.Client.Internal.HttpClient (client, runClientM)
+import Servant.Client (ClientM)
+import Servant.Client.Internal.HttpClient (client)
 
 type LaunchesEndpoint = "v4" :> "launches" :> Get '[JSON] [Launch]
 
