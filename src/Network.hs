@@ -5,6 +5,7 @@ module Network
   ( api,
     fetchLatestLaunch,
     fetchRocketDetails,
+    fetchLaunches,
   )
 where
 
@@ -18,15 +19,18 @@ import Servant.API.Verbs (Get)
 import Servant.Client (ClientM)
 import Servant.Client.Internal.HttpClient (client)
 
-type Latest = "v4" :> "launches" :> "latest" :> Get '[JSON] Launch
+type LaunchesEndpoint = "v4" :> "launches" :> Get '[JSON] [Launch]
 
-type RocketDetails = "v4" :> "rockets" :> Capture "rocketId" RocketId :> Get '[JSON] Rocket
+type LatestEndpoint = "v4" :> "launches" :> "latest" :> Get '[JSON] Launch
 
-type Api = Latest :<|> RocketDetails
+type RocketDetailsEndpoint = "v4" :> "rockets" :> Capture "rocketId" RocketId :> Get '[JSON] Rocket
+
+type Api = LatestEndpoint :<|> RocketDetailsEndpoint :<|> LaunchesEndpoint
 
 api :: Proxy Api
 api = Proxy
 
 fetchLatestLaunch :: ClientM Launch
 fetchRocketDetails :: RocketId -> ClientM Rocket
-(fetchLatestLaunch :<|> fetchRocketDetails) = client api
+fetchLaunches :: ClientM [Launch]
+(fetchLatestLaunch :<|> fetchRocketDetails :<|> fetchLaunches) = client api

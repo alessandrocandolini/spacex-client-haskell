@@ -8,7 +8,7 @@ import GHC.Generics
 import Servant.API (ToHttpApiData)
 
 newtype RocketId = RocketId String
-  deriving (Eq, Show)
+  deriving (Eq, Show, Ord)
   deriving (FromJSON, ToHttpApiData) via String
 
 newtype RocketName = RocketName String

@@ -18,7 +18,7 @@ newtype LaunchDetails = LaunchDetails String
 data Launch = Launch
   { id :: LaunchId,
     rocket :: RocketId,
-    details :: LaunchDetails
+    details :: Maybe LaunchDetails
   }
   deriving (Eq, Show, Generic)
 

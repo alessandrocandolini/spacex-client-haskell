@@ -1,32 +1,47 @@
 module App where
 
+import Control.Concurrent.Async.Lifted
+import qualified Data.Set as S
 import Launches (Launch (rocket))
-import Network (fetchLatestLaunch, fetchRocketDetails)
+import Network (fetchLaunches, fetchRocketDetails)
 import Network.HTTP.Client (newManager)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
-import Rockets (Rocket)
-import Servant.Client (ClientError, ClientM, mkClientEnv, parseBaseUrl)
-import Servant.Client.Internal.HttpClient (runClientM)
+import Rockets (Rocket, RocketId)
+import Servant.Client
+  ( ClientEnv,
+    ClientError,
+    ClientM,
+    mkClientEnv,
+    parseBaseUrl,
+    runClientM,
+  )
 
 program :: IO ()
-program = do
-  manager <- newManager tlsManagerSettings
-  baseUrl <- parseBaseUrl "https://api.spacexdata.com"
-  let clientEnv = mkClientEnv manager baseUrl
-  res <- runClientM fetch clientEnv
-  printRes res
+program = clientEnv >>= program'
 
-fetch :: ClientM (Launch, Rocket)
+clientEnv :: IO ClientEnv
+clientEnv = mkClientEnv <$> manager <*> baseUrl
+  where
+    manager = newManager tlsManagerSettings
+    baseUrl = parseBaseUrl "https://api.spacexdata.com"
+
+program' :: ClientEnv -> IO ()
+program' = (=<<) printRes . runClientM fetch
+
+fetch :: ClientM ([Launch], [Rocket])
 fetch = do
-  l <- fetchLatestLaunch
-  r <- fetchRocketDetails $ rocket l
+  l <- fetchLaunches
+  r <- mapConcurrently fetchRocketDetails (uniqueRocketIds l)
   pure (l, r)
 
-showResults :: Launch -> Rocket -> String
-showResults = curry show
+uniqueRocketIds :: [Launch] -> [RocketId]
+uniqueRocketIds = S.toList . S.fromList . fmap rocket
 
-showResultsOrErrors :: Either ClientError (Launch, Rocket) -> String
+showResults :: (Show a, Show b) => a -> b -> String
+showResults _ = show
+
+showResultsOrErrors :: (Show a, Show b) => Either ClientError (a, b) -> String
 showResultsOrErrors = either show (uncurry showResults)
 
-printRes :: Either ClientError (Launch, Rocket) -> IO ()
+printRes :: (Show a, Show b) => Either ClientError (a, b) -> IO ()
 printRes = putStrLn . showResultsOrErrors
