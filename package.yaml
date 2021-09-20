@@ -13,7 +13,6 @@ dependencies:
 - http-client
 - http-client-tls  
 - fmt
-- async
 - lifted-async
 - mtl == 2.2.*
 - transformers
