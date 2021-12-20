@@ -48,6 +48,8 @@ tests:
     - spacex-client-haskell
     - hspec
     - hspec-discover
+    - sydtest
+    - sydtest-discover
     - QuickCheck
 
 
