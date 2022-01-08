@@ -1,5 +1,7 @@
 # spacex-client-haskell
 
+[![CI](https://github.com/alessandrocandolini/spacex-client-haskell/actions/workflows/ci.yml/badge.svg)](https://github.com/alessandrocandolini/spacex-client-haskell/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/alessandrocandolini/spacex-client-haskell/branch/main/graph/badge.svg?token=7R6FJHNC5S)](https://codecov.io/gh/alessandrocandolini/spacex-client-haskell)
+
 Unofficial CLI client written in Haskell for SpaceX Apis: https://github.com/r-spacex/SpaceX-API
 
 ## How to build and run locally
