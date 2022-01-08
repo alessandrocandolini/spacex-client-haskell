@@ -45,7 +45,7 @@ jobs:
     - name: Generate coverage report
       uses: 8c6794b6/hpc-codecov-action@v2
       with:
-        target: stack:haskell-parser-combinators-test
+        target: stack:spacex-client-haskell-test
         out: ./codecov.json
         verbose: true
 
